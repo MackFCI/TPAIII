@@ -24,7 +24,7 @@ public class Aluno {
         return this.nota2;
     }
     
-    public Aluno(String nome, Double nota1, Double nota2){
+    public Aluno(String nome, Double nota1, Double nota2) throws Exception{
          this.nome = nome;
          this.nota1 = nota1;
          this.nota2 = nota2;

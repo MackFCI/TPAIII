@@ -4,12 +4,13 @@
     Author     : 31117317
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="Mackenzie.Aluno"%>
 <%
     String nome = "", strNota1 = "", strNota2 = "", mensagem = "";
-    Aluno novoAluno = null;
-    Aluno[] alunos = new Aluno[10];
-    alunos = (Aluno[]) session.getAttribute("mackAlunos");
+    List<Aluno> alunos = new ArrayList<Aluno>();
+    //alunos = (List<Aluno>) session.getAttribute("mackAlunos");
     try{
         if(request.getParameter("nome") != null){
             nome = request.getParameter("nome").trim();
@@ -27,8 +28,7 @@
                 if((nota1 < 0 || nota1 > 10) || (nota2 < 0 || nota2 > 10)){
                     mensagem = "O campo nota está incorreto. Preencha com valores entre 0 e 10.";
                 }else{
-                    novoAluno = new Aluno(nome, nota1, nota2);
-                    alunos[alunos.length] = novoAluno;
+                    alunos.add(new Aluno(nome, nota1, nota2));
                     session.setAttribute("mackAlunos", alunos);
                 }
             }
@@ -54,7 +54,7 @@
     </head>
     <body>
         <h1>Atividade #01: Revisão de TPA2</h1>
-        <% if(novoAluno != null && alunos != null){ %>
+        <% if(request.getParameter("nome") != null){ %>
             <table>
                 <tr>
                     <th>Nome</th>
@@ -63,13 +63,13 @@
                     <th>Média</th>
                     <th>Aprovação</th>
                 </tr>
-                <% for(int i=0; i<alunos.length; i++){ %>
+                <% for(Aluno aluno:alunos){ %>
                     <tr>
-                        <td><%=alunos[i].getNome()%></td>
-                        <td><%=alunos[1].getNota1()%></td>
-                        <td><%=alunos[1].getNota1()%></td>
-                        <td><%=alunos[1].retornaMedia()%></td>
-                        <td><%=alunos[1].retornaAprovacao()%></td>
+                        <td><%=aluno.getNome()%></td>
+                        <td><%=aluno.getNota1()%></td>
+                        <td><%=aluno.getNota1()%></td>
+                        <td><%=aluno.retornaMedia()%></td>
+                        <td><%=aluno.retornaAprovacao()%></td>
                     </tr>
                 <% } %>
             </table>
