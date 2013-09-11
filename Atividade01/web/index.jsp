@@ -1,108 +1,70 @@
 <%-- 
     Document   : index
-    Created on : 16/08/2013, 11:19:12
+    Created on : 04/04/2013, 09:51:36
     Author     : 31117317
 --%>
-
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="Mackenzie.Aluno"%>
 <%
-    String nome = "", strNota1 = "", strNota2 = "", mensagem = "";
-    List<Aluno> alunos = new ArrayList<Aluno>();
-    //alunos = (List<Aluno>) session.getAttribute("mackAlunos");
-    try{
-        if(request.getParameter("nome") != null){
-            nome = request.getParameter("nome").trim();
-            strNota1 = request.getParameter("nota1").trim();
-            strNota2 = request.getParameter("nota2").trim();
-            if(nome.isEmpty()){
-                mensagem = "Preencha o campo nome!";
-            }else if(strNota1.isEmpty()){
-                mensagem = "Preencha o campo nota 1!";
-            }else if(strNota2.isEmpty()){
-                mensagem = "Preencha o campo nota 2!";
-            }else{
-                Double nota1 = Double.valueOf(strNota1);
-                Double nota2 = Double.valueOf(strNota2);
-                if((nota1 < 0 || nota1 > 10) || (nota2 < 0 || nota2 > 10)){
-                    mensagem = "O campo nota está incorreto. Preencha com valores entre 0 e 10.";
-                }else{
-                    alunos.add(new Aluno(nome, nota1, nota2));
-                    session.setAttribute("mackAlunos", alunos);
-                }
-            }
+    String txtUsuario = request.getParameter("txtUsuario");
+    String txtSenha = request.getParameter("txtSenha");
+    String msg = "";
+    
+    if(txtUsuario != null && txtSenha != null){
+        if(txtUsuario.equals("teste") && txtSenha.equals("teste")){
+            session.setAttribute("ctrl_usuario", txtUsuario);
+        }else{
+            msg = "Usuário e/ou senha incorretos!";
         }
-    }catch(NumberFormatException e){
-        mensagem = "Você inseriu texto em um campo de números!";
-    }catch(Exception e){
-        mensagem = "Ocorreu um erro inesperado ("+e.toString()+")";
+    }else{
+        txtUsuario = "";
+        txtSenha = "";
     }
 %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Atividade #01: Revisão de TPA2</title>
-        <style>
-            table th{
-                text-align: right;
-            }
-        </style>
+        <title>Lab 7 - Micro TIA</title>
     </head>
     <body>
-        <h1>Atividade #01: Revisão de TPA2</h1>
-        <% if(request.getParameter("nome") != null){ %>
-            <table>
-                <tr>
-                    <th>Nome</th>
-                    <th>Nota 1</th>
-                    <th>Nota 2</th>
-                    <th>Média</th>
-                    <th>Aprovação</th>
-                </tr>
-                <% for(Aluno aluno:alunos){ %>
-                    <tr>
-                        <td><%=aluno.getNome()%></td>
-                        <td><%=aluno.getNota1()%></td>
-                        <td><%=aluno.getNota1()%></td>
-                        <td><%=aluno.retornaMedia()%></td>
-                        <td><%=aluno.retornaAprovacao()%></td>
-                    </tr>
-                <% } %>
-            </table>
-        <% }else{ %>
-            <form method="post">
+        <h1>Lab 7 - Micro TIA</h1>
+        <%
+        String usuarioAutenticado = (String) session.getAttribute("ctrl_usuario");
+        if(usuarioAutenticado == null){
+            %>
+            <style>
+                .alinharDireita{
+                    text-align: right;
+                }
+            </style>
+            <form action="" method="post">
                 <table>
                     <tr>
-                        <th>Nome:</th>
-                        <td><input type="text" name="nome" value="<%=nome%>" /></td>
+                        <td class="alinharDireita">Usuário:</td>
+                        <td><input type="text" name="txtUsuario" id="txtUsuario" value="<%=txtUsuario%>" /></td>
                     </tr>
                     <tr>
-                        <th>Nota 1:</th>
-                        <td><input type="text" name="nota1" value="<%=strNota1%>" /></td>
+                        <td class="alinharDireita">Senha:</td>
+                        <td><input type="password" name="txtSenha" /></td>
                     </tr>
-                    <tr>
-                        <th>Nota 2:</th>
-                        <td><input type="number" name="nota2" min="0" max="10" value="<%=strNota2%>" /></td>
-                    </tr>
+                    <% if(!msg.isEmpty()){ %>
+                        <tr>
+                            <td colspan="2"><span style="font-weight: bold; color: red;"><%=msg%></span></td>
+                        </tr>
+                    <% } %>
                     <tr>
                         <td>&nbsp;</td>
-                        <td><input type="submit" value="Enviar" /></td>
+                        <td><input type="submit" value="Login" /></td>
                     </tr>
-                    <%
-                        if(!mensagem.isEmpty()){
-                            %>
-                            <tr>
-                                <td colspan="2"><%=mensagem%></td>
-                            </tr>
-                            <%
-                        }
-                    %>
                 </table>
             </form>
-        <% } %>
+            <script>document.getElementById('txtUsuario').focus();</script>
+            <%
+        }else{ //USUÁRIO AUTENTICADO
+            %>
+            <p><a href="aluno.jsp">Listar alunos</a></p>
+        <%
+        }
+        %>
     </body>
 </html>
