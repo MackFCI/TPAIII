@@ -4,13 +4,16 @@
     Author     : 31117317
 --%>
 
+<%@page import="Mackenzie.Aluno"%>
 <%
     String nome = "", strNota1 = "", strNota2 = "", mensagem = "";
-    Boolean exibirDados = false;
+    Aluno novoAluno = null;
+    Aluno[] alunos = new Aluno[10];
+    alunos = (Aluno[]) session.getAttribute("mackAlunos");
     try{
         if(request.getParameter("nome") != null){
             nome = request.getParameter("nome").trim();
-            strNota1 = request.  getParameter("nota1").trim();
+            strNota1 = request.getParameter("nota1").trim();
             strNota2 = request.getParameter("nota2").trim();
             if(nome.isEmpty()){
                 mensagem = "Preencha o campo nome!";
@@ -24,12 +27,16 @@
                 if((nota1 < 0 || nota1 > 10) || (nota2 < 0 || nota2 > 10)){
                     mensagem = "O campo nota está incorreto. Preencha com valores entre 0 e 10.";
                 }else{
-                    exibirDados = true;
+                    novoAluno = new Aluno(nome, nota1, nota2);
+                    alunos[alunos.length] = novoAluno;
+                    session.setAttribute("mackAlunos", alunos);
                 }
             }
         }
     }catch(NumberFormatException e){
         mensagem = "Você inseriu texto em um campo de números!";
+    }catch(Exception e){
+        mensagem = "Ocorreu um erro inesperado ("+e.toString()+")";
     }
 %>
 
@@ -47,20 +54,24 @@
     </head>
     <body>
         <h1>Atividade #01: Revisão de TPA2</h1>
-        <% if(exibirDados){ %>
+        <% if(novoAluno != null && alunos != null){ %>
             <table>
                 <tr>
-                    <th>Nome:</th>
-                    <td><%=nome%></td>
+                    <th>Nome</th>
+                    <th>Nota 1</th>
+                    <th>Nota 2</th>
+                    <th>Média</th>
+                    <th>Aprovação</th>
                 </tr>
-                <tr>
-                    <th>Nota 1:</th>
-                    <td><%=strNota1%></td>
-                </tr>
-                <tr>
-                    <th>Nota 2:</th>
-                    <td><%=strNota2%></td>
-                </tr>
+                <% for(int i=0; i<alunos.length; i++){ %>
+                    <tr>
+                        <td><%=alunos[i].getNome()%></td>
+                        <td><%=alunos[1].getNota1()%></td>
+                        <td><%=alunos[1].getNota1()%></td>
+                        <td><%=alunos[1].retornaMedia()%></td>
+                        <td><%=alunos[1].retornaAprovacao()%></td>
+                    </tr>
+                <% } %>
             </table>
         <% }else{ %>
             <form method="post">
