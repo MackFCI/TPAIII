@@ -6,6 +6,7 @@
 
 <%
     String nome = "", strNota1 = "", strNota2 = "", mensagem = "";
+    Boolean exibirDados = false;
     try{
         if(request.getParameter("nome") != null){
             nome = request.getParameter("nome").trim();
@@ -22,6 +23,8 @@
                 Double nota2 = Double.valueOf(strNota2);
                 if((nota1 < 0 || nota1 > 10) || (nota2 < 0 || nota2 > 10)){
                     mensagem = "O campo nota está incorreto. Preencha com valores entre 0 e 10.";
+                }else{
+                    exibirDados = true;
                 }
             }
         }
@@ -44,34 +47,51 @@
     </head>
     <body>
         <h1>Atividade #01: Revisão de TPA2</h1>
-        <form method="post">
+        <% if(exibirDados){ %>
             <table>
                 <tr>
                     <th>Nome:</th>
-                    <td><input type="text" name="nome" value="<%=nome%>" /></td>
+                    <td><%=nome%></td>
                 </tr>
                 <tr>
                     <th>Nota 1:</th>
-                    <td><input type="text" name="nota1" value="<%=strNota1%>" /></td>
+                    <td><%=strNota1%></td>
                 </tr>
                 <tr>
                     <th>Nota 2:</th>
-                    <td><input type="number" name="nota2" min="0" max="10" value="<%=strNota2%>" /></td>
+                    <td><%=strNota2%></td>
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><input type="submit" value="Enviar" /></td>
-                </tr>
-                <%
-                    if(!mensagem.isEmpty()){
-                        %>
-                        <tr>
-                            <td colspan="2"><%=mensagem%></td>
-                        </tr>
-                        <%
-                    }
-                %>
             </table>
-        </form>
+        <% }else{ %>
+            <form method="post">
+                <table>
+                    <tr>
+                        <th>Nome:</th>
+                        <td><input type="text" name="nome" value="<%=nome%>" /></td>
+                    </tr>
+                    <tr>
+                        <th>Nota 1:</th>
+                        <td><input type="text" name="nota1" value="<%=strNota1%>" /></td>
+                    </tr>
+                    <tr>
+                        <th>Nota 2:</th>
+                        <td><input type="number" name="nota2" min="0" max="10" value="<%=strNota2%>" /></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" value="Enviar" /></td>
+                    </tr>
+                    <%
+                        if(!mensagem.isEmpty()){
+                            %>
+                            <tr>
+                                <td colspan="2"><%=mensagem%></td>
+                            </tr>
+                            <%
+                        }
+                    %>
+                </table>
+            </form>
+        <% } %>
     </body>
 </html>
