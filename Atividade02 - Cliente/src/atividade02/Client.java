@@ -4,8 +4,6 @@
  */
 package atividade02;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -26,10 +24,10 @@ public class Client {
         int port = 1099;
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
-            Hello stub = (Hello) registry.lookup("Hello");
-            String response = stub.sayHello();
+            Calculadora stub = (Calculadora) registry.lookup("Calculadora");
+            Double response = stub.soma(3.5, 2.5);
             System.out.println("response: " + response);
-        } catch (RemoteException | NotBoundException e) {
+        } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
         }
     }

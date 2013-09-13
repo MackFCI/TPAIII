@@ -4,26 +4,56 @@
  */
 package atividade02;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 /**
  *
  * @author 31117317
  */
-public class Server implements Hello {
+public class Server implements Calculadora {
 
     public Server() {}
     
     /**
      *
+     * @param a
+     * @param b
      * @return
      */
     @Override
-    public String sayHello() {
-        return "Hello, world!";
+    public Double soma(Double a, Double b) {
+        return a+b;
+    }
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    @Override
+    public Double sub(Double a, Double b){
+        return a-b;
+    }
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    @Override
+    public Double mult(Double a, Double b){
+        return a*b;
+    }
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    @Override
+    public Double div(Double a, Double b){
+        return a/b;
     }
     
     /**
@@ -32,15 +62,15 @@ public class Server implements Hello {
     public static void main(String[] args) {
         // TODO code application logic here
         try {
-            Hello obj = new Server();
-            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 0);
+            Calculadora obj = new Server();
+            Calculadora stub = (Calculadora) UnicastRemoteObject.exportObject(obj, 0);
 
             // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.createRegistry(1099);
-            registry.bind("Hello", stub);
+            registry.bind("Calculadora", stub);
 
             System.err.println("Server ready");
-        } catch (RemoteException | AlreadyBoundException e) {
+        } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
         }
     }
