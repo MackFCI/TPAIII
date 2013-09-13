@@ -11,7 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author 31117317
  */
-public class Server implements Calculadora {
+public class Server implements CalculadoraComplexo {
 
     public Server() {}
     
@@ -22,8 +22,13 @@ public class Server implements Calculadora {
      * @return
      */
     @Override
-    public Double soma(Double a, Double b) {
-        return a+b;
+    public Complexo soma(Complexo a, Complexo b) {
+        Double resultadoReal, resultadoImaginario;
+        
+        resultadoReal = a.getReal() + b.getReal();
+        resultadoImaginario = a.getImaginario() + b.getImaginario();
+        
+        return new Complexo(resultadoReal, resultadoImaginario);
     }
     /**
      *
@@ -32,8 +37,13 @@ public class Server implements Calculadora {
      * @return
      */
     @Override
-    public Double sub(Double a, Double b){
-        return a-b;
+    public Complexo sub(Complexo a, Complexo b) {
+        Double resultadoReal, resultadoImaginario;
+        
+        resultadoReal = a.getReal() - b.getReal();
+        resultadoImaginario = a.getImaginario() - b.getImaginario();
+        
+        return new Complexo(resultadoReal, resultadoImaginario);
     }
     /**
      *
@@ -42,8 +52,13 @@ public class Server implements Calculadora {
      * @return
      */
     @Override
-    public Double mult(Double a, Double b){
-        return a*b;
+    public Complexo mult(Complexo a, Complexo b) {
+        Double resultadoReal, resultadoImaginario;
+        
+        resultadoReal = (a.getReal() * b.getReal()) - (a.getImaginario() * b.getImaginario());
+        resultadoImaginario = (a.getReal() * b.getImaginario()) + (a.getImaginario() * b.getReal());
+        
+        return new Complexo(resultadoReal, resultadoImaginario);
     }
     /**
      *
@@ -52,8 +67,39 @@ public class Server implements Calculadora {
      * @return
      */
     @Override
-    public Double div(Double a, Double b){
-        return a/b;
+    public Complexo div(Complexo a, Complexo b) {
+        Double resultadoReal, resultadoImaginario;
+        
+        resultadoReal = (
+            (
+                (
+                    a.getReal() * b.getReal()
+                ) + (
+                    a.getImaginario() * b.getImaginario()
+                )
+            ) / (
+                (
+                    b.getReal() * b.getReal()
+                ) + (
+                    b.getImaginario() * b.getImaginario()
+                )
+            )
+        );
+        resultadoImaginario = (
+            (
+                a.getImaginario() * b.getReal()
+            ) - (
+                a.getReal() * b.getImaginario()
+            ) / (
+                (
+                    b.getReal() * b.getReal()
+                ) + (
+                    b.getImaginario() * b.getImaginario()
+                )
+            )
+        );
+        
+        return new Complexo(resultadoReal, resultadoImaginario);
     }
     
     /**
@@ -62,12 +108,12 @@ public class Server implements Calculadora {
     public static void main(String[] args) {
         // TODO code application logic here
         try {
-            Calculadora obj = new Server();
-            Calculadora stub = (Calculadora) UnicastRemoteObject.exportObject(obj, 0);
-
-            // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.createRegistry(1099);
-            registry.bind("Calculadora", stub);
+            
+            CalculadoraComplexo obj = new Server();
+            CalculadoraComplexo stub = (CalculadoraComplexo) UnicastRemoteObject.exportObject(obj, 0);
+            // Bind the remote object's stub in the registry
+            registry.bind("CalculadoraComplexo", stub);
 
             System.err.println("Server ready");
         } catch (Exception e) {

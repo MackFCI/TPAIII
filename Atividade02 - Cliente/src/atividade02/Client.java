@@ -24,9 +24,24 @@ public class Client {
         int port = 1099;
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
-            Calculadora stub = (Calculadora) registry.lookup("Calculadora");
-            Double response = stub.soma(3.5, 2.5);
-            System.out.println("response: " + response);
+            CalculadoraComplexo stub = (CalculadoraComplexo) registry.lookup("CalculadoraComplexo");
+            
+            Complexo n1 = new Complexo(1.0, 2.0);
+            Complexo n2 = new Complexo(3.0, 4.0);
+            
+            Complexo resposta;
+            
+            resposta = stub.soma(n1, n2);
+            System.out.println("Soma: " + resposta.getComplexo());
+            
+            resposta = stub.sub(n1, n2);
+            System.out.println("Subtração: " + resposta.getComplexo());
+            
+            resposta = stub.mult(n1, n2);
+            System.out.println("Multiplicação: " + resposta.getComplexo());
+            
+            resposta = stub.div(n1, n2);
+            System.out.println("Divisão: " + resposta.getComplexo());
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
         }
