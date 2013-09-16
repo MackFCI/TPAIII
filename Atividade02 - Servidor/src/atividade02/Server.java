@@ -116,6 +116,8 @@ public class Server  implements CalculadoraComplexo {
             registry.bind("CalculadoraComplexo", stub);
 
             System.err.println("Servidor pronto!");
+            
+            System.out.println(java.rmi.server.RemoteServer.getClientHost());
         } catch (Exception e) {
             System.err.println("Exceção do servidor: " + e.toString());
         }

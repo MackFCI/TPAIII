@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package atividade02;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 
-/**
- *
- * @author 31117317
- */
 public class Client {
     
     private Client() {}
@@ -20,14 +13,27 @@ public class Client {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        String host = (args.length < 1) ? null : args[0];
+        /*String host = "172.16.19.17";*/
+		String host = (args.length < 1) ? null : args[0];
         int port = 1099;
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
             CalculadoraComplexo stub = (CalculadoraComplexo) registry.lookup("CalculadoraComplexo");
             
-            Complexo n1 = new Complexo(Double.valueOf(5), Double.valueOf(1));
-            Complexo n2 = new Complexo(Double.valueOf(2), Double.valueOf(-1));
+            Scanner teclado = new Scanner(System.in);
+            
+            
+            System.out.println("Digite o primeiro real");
+            Double real1 = Double.valueOf(teclado.next());
+            System.out.println("Digite o primeiro imaginario");
+            Double imaginario1 = Double.valueOf(teclado.next());
+            System.out.println("Digite o segundo real");
+            Double real2 = Double.valueOf(teclado.next());
+            System.out.println("Digite o segundo imaginario");
+            Double imaginario2 = Double.valueOf(teclado.next());
+            
+            Complexo n1 = new Complexo(real1,imaginario1);
+            Complexo n2 = new Complexo(real2,imaginario2);
             
             Complexo resposta;
             
