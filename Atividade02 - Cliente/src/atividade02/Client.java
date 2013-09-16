@@ -26,8 +26,8 @@ public class Client {
             Registry registry = LocateRegistry.getRegistry(host, port);
             CalculadoraComplexo stub = (CalculadoraComplexo) registry.lookup("CalculadoraComplexo");
             
-            Complexo n1 = new Complexo(1.0, 2.0);
-            Complexo n2 = new Complexo(3.0, 4.0);
+            Complexo n1 = new Complexo(Double.valueOf(5), Double.valueOf(1));
+            Complexo n2 = new Complexo(Double.valueOf(2), Double.valueOf(-1));
             
             Complexo resposta;
             
@@ -43,7 +43,7 @@ public class Client {
             resposta = stub.div(n1, n2);
             System.out.println("Divisão: " + resposta.getComplexo());
         } catch (Exception e) {
-            System.err.println("Client exception: " + e.toString());
+            System.err.println("Exceção do cliente: " + e.toString());
         }
     }
 }

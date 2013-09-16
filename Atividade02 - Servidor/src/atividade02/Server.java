@@ -11,9 +11,9 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author 31117317
  */
-public class Server implements CalculadoraComplexo {
+public class Server  implements CalculadoraComplexo {
 
-    public Server() {}
+    public Server(){}
     
     /**
      *
@@ -115,9 +115,9 @@ public class Server implements CalculadoraComplexo {
             // Bind the remote object's stub in the registry
             registry.bind("CalculadoraComplexo", stub);
 
-            System.err.println("Server ready");
+            System.err.println("Servidor pronto!");
         } catch (Exception e) {
-            System.err.println("Server exception: " + e.toString());
+            System.err.println("Exceção do servidor: " + e.toString());
         }
     }
 }

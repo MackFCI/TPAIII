@@ -4,11 +4,13 @@
  */
 package atividade02;
 
+import java.io.Serializable;
+
 /**
  *
  * @author lucasesaito
  */
-public class Complexo {
+public class Complexo implements Serializable{
     private double real, imaginario;
     
     public Complexo(Double real, Double imaginario){
