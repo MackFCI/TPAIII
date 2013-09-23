@@ -1,0 +1,1 @@
+start java -jar "dist\Prova_parcial_-_Cliente.jar"

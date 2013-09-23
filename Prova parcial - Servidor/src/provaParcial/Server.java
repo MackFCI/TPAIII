@@ -134,6 +134,12 @@ public class Server implements JogoDaVelha {
                 return tabuleiro[0][j];
             }
         }
+        //ganhou na diagonal
+        if(tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2] && tabuleiro[2][2] != 0){
+            return tabuleiro[0][0];
+        }else if(tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0] && tabuleiro[2][0] != 0){
+            return tabuleiro[0][2];
+        }
         
         //verifica se deu velha (ninguém ganhou)
         boolean deuVelha = true;
